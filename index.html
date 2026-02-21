@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brinmat</title>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
+
+body {
+  background: linear-gradient(135deg, #e6f7ff, #f9fcff);
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#00334d;
+}
+
+.container {
+  text-align:center;
+  background:white;
+  padding:60px 40px;
+  border-radius:20px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.08);
+  position:relative;
+  z-index:2;
+}
+
+h1 {
+  font-size:2.8rem;
+  color:#0077b6;
+}
+
+.subtitle {
+  margin-top:10px;
+  font-size:1.2rem;
+  opacity:0.7;
+}
+
+.icon {
+  font-size:70px;
+  margin:30px 0;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.progress {
+  width:250px;
+  height:6px;
+  background:#e0f4ff;
+  margin:25px auto;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.progress::after {
+  content:"";
+  display:block;
+  width:60px;
+  height:100%;
+  background:#00b4d8;
+  animation: move 2s linear infinite;
+}
+
+@keyframes move {
+  from { margin-left:-60px; }
+  to { margin-left:250px; }
+}
+
+.status {
+  font-size:1rem;
+  margin-top:10px;
+  opacity:0.8;
+}
+
+canvas {
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:1;
+}
+
+</style>
+</head>
+
+<body>
+<canvas id="bubbles"></canvas>
+
+<div class="container">
+  <h1>BRINMAT</h1>
+  <h1>Estamos a preparar tudo</h1>
+  <div class="subtitle">O nosso site está a ser limpo e organizado</div>
+  <div class="icon">🧼</div>
+  <div class="progress"></div>
+  <div class="status">Brevemente disponível</div>
+</div>
+
+<script>
+const canvas = document.getElementById("bubbles");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let bubbles = [];
+
+for(let i=0;i<60;i++){
+  bubbles.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    size: Math.random()*8 + 2,
+    speed: Math.random()*0.5 + 0.2
+  });
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "rgba(0,180,216,0.2)";
+
+  bubbles.forEach(b => {
+    ctx.beginPath();
+    ctx.arc(b.x,b.y,b.size,0,Math.PI*2);
+    ctx.fill();
+
+    b.y -= b.speed;
+
+    if(b.y < -10){
+      b.y = canvas.height + 10;
+      b.x = Math.random()*canvas.width;
+    }
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>
